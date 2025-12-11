@@ -1,6 +1,7 @@
 # Short Responses
 
 For this short response assignment, aim to write a response with the following qualities (your instructor will give you feedback on these areas):
+
 - [] Addresses all parts of the prompt
 - [] Accurately uses relevant technical terminology
 - [] Is free of grammar and spelling mistakes (double check with grammarly!)
@@ -26,14 +27,16 @@ Part B: How would you modify the code so that reassigning `playlist2.songCount` 
 
 ### Response 1
 
-Your response...
+What will be logged to the console is `15` because objects are **reference types** in JavaScript so when you write `const playlist2 = playlist1;` you are not copying the object you are copying the **reference** to the same object in memory.
+
+To fix this you can make a shallow copy the object by using the spread operator.
 
 **Corrected Code:**
 
 ```js
 // fix this!
 const playlist1 = { name: "My Favorites", songCount: 10 };
-const playlist2 = playlist1;
+const playlist2 = { ...playlist1 };
 playlist2.songCount = 15;
 console.log(playlist1.songCount);
 ```
@@ -47,7 +50,7 @@ const students = [
   { name: "Maya", grade: 92, passed: true },
   { name: "Jamal", grade: 78, passed: true },
   { name: "Destiny", grade: 88, passed: true },
-  { name: "Marcus", grade: 95, passed: true }
+  { name: "Marcus", grade: 95, passed: true },
 ];
 ```
 
@@ -60,7 +63,30 @@ For each task below, identify which array method (forEach, filter, map, find, or
 
 ### Response 2
 
-Your response...
+1. ```js
+   const aboveEightyFive = students.filter((student) => student.grade > 85);
+   console.log(aboveEightyFive);
+   ```
+2. ```js
+   const findAndUpdate = students.find((student) => {
+     if (student.name === "Destiny") {
+       student.grade = 90;
+     }
+   });
+   console.log(findAndUpdate);
+   ```
+3. ```js
+   const calculateAverage = students.reduce((sum, student) => {
+     return sum + student.grade / students.length;
+   }, 0);
+   console.log(calculateAverage);
+   ```
+4. ```js
+   const arrayOfStrings = students.map((student) => {
+     return `${student.name}: ${student.grade}`;
+   });
+   console.log(arrayOfStrings);
+   ```
 
 ---
 
@@ -71,10 +97,10 @@ We should expect that the code below prints the array `[ 'A', 'B', 'C', 'D' ]` b
 Explain why this error occurs, how to fix it, and provide a suggestion for how to avoid this error in the future.
 
 ```js
-const letters = ['a', 'b', 'c', 'd'];
+const letters = ["a", "b", "c", "d"];
 const capitalize = (str) => str.toUpperCase();
 
-const upperCaseLetters = letters.map(capitalize());
+const upperCaseLetters = letters.map(capitalize);
 // Uncaught TypeError: Cannot read properties of undefined (reading 'toUpperCase')
 
 console.log(upperCaseLetters);
@@ -82,7 +108,7 @@ console.log(upperCaseLetters);
 
 ### Response 3
 
-Your response...
+Here we are calling `capitalize()`immediately instead of passing it as a callback function, so it is executed right away with no arguments. That means inside capitalize, str is undefined. What we should do is pass the function, not call it: `const upperCaseLetters = letters.map(capitalize);`.
 
 ---
 
@@ -94,7 +120,7 @@ Given this code:
 const orders = [
   { id: 1, total: 45 },
   { id: 2, total: 23 },
-  { id: 3, total: 67 }
+  { id: 3, total: 67 },
 ];
 
 const grandTotal = orders.reduce((sum, order) => {
@@ -105,10 +131,40 @@ const grandTotal = orders.reduce((sum, order) => {
 - Part A: What will `grandTotal` equal after this code runs?
 - Part B: Explain what the `0` at the end of the reduce method does. Why is it important?
 - Part C: Walk through what happens in the FIRST iteration of reduce:
-    - What is the value of sum?
-    - What is the value of order?
-    - What gets returned?
+  - What is the value of sum?
+  - What is the value of order?
+  - What gets returned?
 
 ### Response 4
 
-Your response...
+- Part A: What will `grandTotal` equal after this code runs? 135.
+
+- Part B: Explain what the `0` at the end of the reduce method does. Why is it important?
+
+The `0` is the **initial value** of the accumulator (`sum`).
+
+It means that before reduce starts looping, `sum` is set to `0`.
+
+**This is important because:**
+
+1. It ensures the accumulator starts as a number.
+
+2. It prevents errors when adding the first element.
+
+3. It makes the reduce behavior predictable, especially with empty arrays.
+
+Without the **initial value**, reduce would use the first **array element** as the starting value, which can cause bugs.
+
+#### What is the value of sum?
+
+sum = 0
+(because of the initial value)
+
+#### What is the value of order?
+
+order = { id: 1, total: 45 }
+(the **first element** in the `orders` array)
+
+#### What gets returned?
+
+0 + 45 = 45
